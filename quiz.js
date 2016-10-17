@@ -1,6 +1,4 @@
-/*
- * @author Rijn
- */
+
 ;
 (function(window, document, undefined) {
     "use strict";
@@ -122,7 +120,7 @@
                                             parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
                                             var question = $(this).parentsUntil(".question").parent();
                                             if (!_this.score.hasOwnProperty(question.data('id'))) {
-                                                _this.score[question.data('id')] = 1;
+                                                _this.score[question.data('id')] = 2;
                                             }
                                             break;
                                         } else {
@@ -154,7 +152,7 @@
                             if (!_this.score.hasOwnProperty(question.data('id'))) {
                                 _this.score[question.data('id')] = 0;
                             }
-                            _this.refreshScore(1);
+                            _this.refreshScore();
                         };
                     }(this)));
                 },
@@ -179,7 +177,6 @@
                             </div>\
                         {{/each}}\
                         </div>\
-                        \
                         <div class="names">\
                         {{each names}}\
                             <div class="name" data-item="${$value.a}">\
@@ -208,7 +205,7 @@
                                 var k =0;
                                 for (var k in answer){
                                     if (answer[k] == exp_set[k]){
-                                        count = count + 0.125;
+                                        count = count + 0.5;
                                         exp_set.splice(k,1);
                                     }
 //                                    console.log(count);
@@ -217,7 +214,7 @@
                                 question.addClass('answered');
                                 _this.score[question.data('id')] = count;
                                 _this.refreshScore();
-                                if (count == 1){
+                                if (count == 4){
                                     parent.children('.result').children('span').text("Congratulations! Your pairing is correct!");
                                     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
                                 }
@@ -242,21 +239,17 @@
                     <div class="right">\
                         <div class="description">\
                             <span>${question}</span>\
-                            <br></br>\
-                            <span> (choose 1 to 7 from oldest to newest, write them in the box without space) </span>\
                         </div>\
                         \
-                        <div class="options" >\
+                        <div class="options sortable" >\
                         {{each options}}\
-                            <div class="option" data-item="${$value.item}">\
+                            <div class="option" data-item="${$value.item}" data-index="${$value.index}">\
                                 <span>${$value.item}</span>\
                                 <div class="explanation">${$value.explanation}</div>\
                                 <div class = "index">${$value.index}</div>\
                             </div>\
                         {{/each}}\
                         </div>\
-                        <input class ="inputRanking" id = "inputAnswer" type="text" >\
-                        </input>\
                         <div class="submit"><span>Submit</span></div>\
                         <div class="result"><span></span></div>\
                         <div class="show-all"><span>Show all explanations</span></div>\
@@ -267,31 +260,60 @@
                         return function(){
                             var parent = $(this).parent();
 
-                            var question = $(this).parentsUntil(".question").parent();
+                            var question = $($(this).parentsUntil(".question").parent()[0]);
                             question.addClass('answered');
-                            
-                            var answer = document.getElementById("inputAnswer").value;
-                            var exp = parent.children('.options').children('.option').children('.index').text();
 
-                            var k =0;
-                            var count =0;
-                            for (var k in answer){
-                                if (answer[k] == exp[k])
+                            /* get order */
+                            var _order = [];
+                            question.find('.option').each((function(_order) {
+                                return function() {
+                                    _order.push($(this).data('index'));
+                                };
+                            }(_order)));
+
+                            console.log(_order);
+
+                            var count = 0;
+                            for (var k in _order){
+                                if (_order[k] == (k+1))
                                     count += 1;
-
                             }
+
 
                             if (count == 7){
-                                _this.score[question.data('id')] = 1;
-                                parent.children('.result').children('span').text("Congratulations! Your ranking is correct!");
-                                parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
+                                 _this.score[question.data('id')] = 1;
+                                 parent.children('.result').children('span').text("Congratulations! Your ranking is correct!");
+                                 parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
                             }
                             else{
-                                _this.score[question.data('id')] = 0;
-                                parent.children('.result').children('span').text("Sorry you're wrong. Please see the correct year. The correct ranking of these inventions should be " + exp);
-                                parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
+                                 _this.score[question.data('id')] = 0;
+                                 parent.children('.result').children('span').text("Sorry you're wrong. Please click 'show all explanations' to see the correct year." );
+                                 parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
 
                             }
+
+
+                            // var answer = document.getElementById("inputAnswer").value;
+
+                            // var k =0;
+                            // var count =0;
+                            // for (var k in answer){
+                            //     if (answer[k] == exp[k])
+                            //         count += 1;
+
+                            // }
+
+                            // if (count == 7){
+                            //     _this.score[question.data('id')] = 1;
+                            //     parent.children('.result').children('span').text("Congratulations! Your ranking is correct!");
+                            //     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
+                            // }
+                            // else{
+                            //     _this.score[question.data('id')] = 0;
+                            //     parent.children('.result').children('span').text("Sorry you're wrong. Please see the correct year. The correct ranking of these inventions should be " + exp);
+                            //     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
+
+                            // }
 
                             _this.refreshScore();
                                 
@@ -319,7 +341,7 @@
             }
         },
 
-        refreshScore: function(count) {
+        refreshScore: function() {
             var totalCount = 0,
                 correctCount = 0;
             
@@ -349,6 +371,8 @@
                     type.judger && type.judger.call(this, $(parent).children('div:last-child'), this.items[key]);
                 }
             }
+
+            $( ".options.sortable" ).sortable();
 
         },
     };
