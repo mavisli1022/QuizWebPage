@@ -21,6 +21,7 @@
         };
     };
 
+    /*Create prototype for quiz*/
     Quiz.prototype = {
         items: [],
         import: function(questions) {
@@ -28,6 +29,7 @@
         },
         score: [],
         types: {
+            //single choice
             'single': {
                 template: '<div class="question question-single" data-id="${id}">\
                     <div class="left">\
@@ -49,23 +51,27 @@
                     </div>\
                 </div>',
                 judger: function(question, data) {
+                    //click function for submitting answer
                     question.on('click', '.option', (function(_this) {
                         return function() {
                             $(this).addClass('selected');
                             var parent = $(this).parentsUntil(".question").parent();
                             if (!_this.score.hasOwnProperty(parent.data('id'))) {
                                 parent.addClass('answered');
+                                //update score
                                 _this.score[parent.data('id')] = $(this).hasClass('correct-true');
-                                _this.refreshScore(1);
+                                _this.refreshScore();
                             }
                         };
                     }(this)));
+                    //click function for showing explanations
                     question.on('click', '.show-all', function() {
                         $(this).parent().children(".options").children().addClass('selected');
                     });
 
                 },
             },
+            //multiple choices
             'multiple': {
                 template: '<div class="question question-multiple" data-id="${id}">\
                     <div class="left">\
@@ -88,6 +94,8 @@
                     </div>\
                 </div>',
                 judger: function(question, data) {
+
+                    //multi-selecting choices
                     question.on('click', '.option', function() {
                         if ($(this).hasClass('selected')) {
                             $(this).removeClass('selected');
@@ -96,6 +104,7 @@
                         }
                     });
 
+                    //submit answer
                     question.on('click', '.submit', (function(_this) {
                         return function() {
                             var parent = $(this).parent();
@@ -105,20 +114,24 @@
                                 if ($(this).hasClass('selected')) result.push($(this).data('item'));
                             })
                             switch (result.length) {
+                                //if the user selects 0 option
                                 case 0:
                                     parent.children('.result').children('span').text("Please select at least one word");
                                     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
                                     break;
+                                //if the user selects 1 option
                                 case 1:
                                     parent.children('.result').children('span').text("Your answer is incomplete.  Please select another word.");
                                     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
                                     break;
+                                //if the user selects 2 options
                                 case 2:
                                     if (include(data.answer, result[0])) {
                                         if (include(data.answer, result[1])) {
                                             parent.children('.result').children('span').text("Yes!  It is hard to believe that words we take for granted in computing were once so new.");
                                             parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
                                             var question = $(this).parentsUntil(".question").parent();
+                                            //check if the answer is correct, update score
                                             if (!_this.score.hasOwnProperty(question.data('id'))) {
                                                 _this.score[question.data('id')] = 2;
                                             }
@@ -149,9 +162,11 @@
                                     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-false');
                                     break;
                             }
+
                             if (!_this.score.hasOwnProperty(question.data('id'))) {
                                 _this.score[question.data('id')] = 0;
                             }
+                            //update score for incorrect answer
                             _this.refreshScore();
                         };
                     }(this)));
@@ -198,11 +213,17 @@
                             return function(){
                                 var count = 0;
                                 var parent = $(this).parent();
+
+                                //get the user's answer
                                 var answer = document.getElementById("inputName").value.split(",");
+                                
+                                //get the correct answer
                                 var exp = parent.children('.options').children('.option').children('.explanation').text();
                                 var exp_set = exp.split("  ");
    //                             console.log(exp_set);
                                 var k =0;
+
+                                //compare if user's answer is correct
                                 for (var k in answer){
                                     if (answer[k] == exp_set[k]){
                                         count = count + 0.5;
@@ -212,8 +233,12 @@
                                 }
                                 var question = $(this).parentsUntil(".question").parent();
                                 question.addClass('answered');
+
+                                //update score
                                 _this.score[question.data('id')] = count;
                                 _this.refreshScore();
+
+                                //show result
                                 if (count == 4){
                                     parent.children('.result').children('span').text("Congratulations! Your pairing is correct!");
                                     parent.children('.result').removeClass('correct-false correct-true').addClass('correct-true');
@@ -226,6 +251,8 @@
                             };
 
                         }(this)));
+
+                        //show explanations
                         question.on('click', '.show-all', function() {
                             $(this).parent().children(".options").children().addClass('selected');
                         });
@@ -263,7 +290,7 @@
                             var question = $($(this).parentsUntil(".question").parent()[0]);
                             question.addClass('answered');
 
-                            /* get order */
+                            // get correct order 
                             var _order = [];
                             question.find('.option').each((function(_order) {
                                 return function() {
@@ -272,14 +299,14 @@
                             }(_order)));
 
                             console.log(_order);
-
+                            //compare user's answer with the correct one
                             var count = 0;
                             for (var k in _order){
                                 if (_order[k] == (k+1))
                                     count += 1;
                             }
 
-
+                            //check if user's answer is totally correct, update score
                             if (count == 7){
                                  _this.score[question.data('id')] = 1;
                                  parent.children('.result').children('span').text("Congratulations! Your ranking is correct!");
@@ -320,7 +347,7 @@
                         };
 
                 }(this)));
-
+                //show explanations
                 question.on('click', '.show-all', function() {
                     $(this).parent().children(".options").children().addClass('selected');
                 });
@@ -330,7 +357,7 @@
             },
         },
 
-
+        //random shuffle function
         shuffle: function(a) {
             var j, x, i;
             for (i = a.length; i; i--) {
@@ -341,6 +368,7 @@
             }
         },
 
+        //refresh score function
         refreshScore: function() {
             var totalCount = 0,
                 correctCount = 0;
@@ -355,8 +383,9 @@
             }
             $("#grade").text('Grade ' + correctCount + '/' + totalCount);
         },
-        render: function(parent) {
 
+        render: function(parent) {
+            //shuffle questions and options randomly
             if (this.options.shuffle) {
                 this.shuffle(this.items);
                 for(var i in this.items){
@@ -364,6 +393,7 @@
                 }
             };
 
+            //load templates
             for (var key in this.items) {
                 if (this.items.hasOwnProperty(key)) {
                     var type = this.types[this.items[key].type];
@@ -381,6 +411,8 @@
 
 })(window, document);
 
+
+//questions in the quiz
 questions = [{
     type: 'single',
     question: 'The first electronic computer in Canada was housed in the Computer Science Department at the U of T.  What was its name?',
