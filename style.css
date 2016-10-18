@@ -1,0 +1,247 @@
+
+html {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 12px;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    max-width: 960px;
+    margin: auto;
+    line-height: 2em;
+}
+
+a {
+    background-color: transparent;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: inline-block;
+}
+
+.container.right {
+    float: right;
+}
+
+nav.navbar {
+    background: #eee;
+    border-radius: 4px;
+    margin: 15px auto;
+    position: relative;
+    overflow: hidden;
+}
+
+nav .container {
+    z-index: 100;
+}
+
+nav .progress {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: #ccc;
+    z-index: 99;
+}
+
+.navbar ul {
+    z-index: 100;
+}
+
+.navbar ul li {
+    display: inline-block;
+    /*border-left: 1px solid #ddd;*/
+    /*border-right: 1px solid #ddd;*/
+}
+
+.navbar a,
+.navbar span {
+    display: inline-block;
+    padding: 15px;
+}
+
+.navbar a {
+    cursor: pointer;
+}
+
+.navbar a:hover {
+    background: #ddd;
+}
+
+.container.questions {
+    font-size: 1.2em;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.question {
+    /*padding: 20px;*/
+    background: #eee;
+    border-radius: 4px;
+    margin: 15px 0;
+    overflow: hidden;
+    width: 100%;
+    border: solid 1px transparent;
+    -webkit-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.question:hover {
+    border: solid 1px #ccc;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.question .left {
+    display: inline-block;
+    float: left;
+    width: 5%;
+    padding: 20px 2.5%;
+    text-align: center;
+}
+
+.question .left span {
+    font-weight: 400;
+    color: #000;
+    font-size: 2em;
+    opacity: 0.2;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+}
+
+
+.question:hover .left span {
+    opacity: 0.5;
+}
+
+.question .right {
+    display: inline-block;
+    float: right;
+    width: 80%;
+    padding: 20px 5% 20px 5%;
+    background: #f8f8f8;
+}
+
+.question .question-arrange .options .option{
+    width: 75%;
+}
+
+ .question-arrange .answer{
+    width: 1em;
+    font-size:20px;
+}
+
+
+
+.question .right .names .name,
+.question .right .options .option,
+.question .right .submit {
+    padding: 10px;
+    display: block;
+    background: #eee;
+    border-radius: 4px;
+    margin: 15px 0;
+    cursor: pointer;
+    border: solid 1px transparent;
+    -webkit-transition: all 0.05s ease-in-out;
+    transition: all 0.05s ease-in-out;
+}
+
+.question .right .submit {
+    display: inline-block;
+}
+
+.option.selected {
+    background: #fcf8e3 !important;
+}
+
+.option.selected.correct-true,
+.result.correct-true {
+    background: #dff0d8 !important;
+}
+
+.option.selected.correct-false,
+.result.correct-false {
+    background: #f2dede !important;
+}
+
+.question .right .names .name{
+    float: left;
+    margin-right: 4%;
+}
+
+.answer{
+    width:  30em;
+    font-size:20px;
+}
+
+
+.inputRanking{
+    width:  8em;
+    font-size:20px;
+}
+
+.question-matching .options .option:{
+    float: right;
+    width: 50%;
+}
+.question .right .names .name:hover,
+.question .right .options .option:hover,
+.question .right .submit:hover {
+    border: solid 1px #ccc;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.question .right .options .option .explanation {
+    display: none;
+    color: #999;
+}
+
+.question .right .options .option.selected .explanation {
+    display: block !important;
+}
+
+.question .right .show-all {
+    display: none;
+}
+
+.question .right .options .option .index{
+    display: none;
+    color: #999;   
+}
+
+.question.answered .right .show-all {
+    padding: 5px;
+    display: block;
+    margin: 15px 0;
+    cursor: pointer;
+    opacity: 0.5;
+    -webkit-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+}
+
+.question.answered .right .show-all:hover {
+    opacity: 0.8;
+}
+
+.question .result {
+    padding: 10px;
+    border-radius: 4px;
+}
