@@ -1,0 +1,89 @@
+Marking Scheme
+
+Functionality:
+
+Q1 Mulitple choice
+------------------
+: 2 / 2
+
+- Answer appears below selected option immediately after user selects it
+- Score is recorded only on the first selection
+- Show all explanations
+- Individual explanations can be selected
+
+TA Feedback:
+Good.
+
+Q2 Multiple choice multiple selection
+-------------------------------------
+: 2 / 2
+
+- Selecting "submit answer" produces correct message
+    -  2 selected, 1 selected, 0 selected
+	-  2 correctly selected, 1 correctly selected, 0 correctly selected
+- Score is updated correctly
+
+TA Feedback:
+Good.
+
+Q3 Matching
+-----------
+: 3 / 3
+
+- There are a variety of ways that this could be correctly implemented
+- The method chosen should be clear to the user
+- Score is updated correctly
+
+TA Feedback:
+Annoying. But satisfies requirements
+
+
+Q4 Re-arranging
+---------------
+: 2 / 3
+
+- Elements should be re-ordered not just labeled
+- Score is updated correctly
+
+TA Feedback:
+I think you're checking code is off...
+
+Scoring
+-------
+: 2 / 2
+- Total score is displayed and reset properly
+
+TA Feedback:
+Good.
+
+Code Style
+---------
+: 3 / 3
+
+- Code and HTML is easy to read, well-indented, good choice of variable names
+- Code is not duplicated, is documented well
+
+TA Feedback:
+Good.
+
+
+Page Style
+----------
+: 2 / 2
+- Some attention to look and feel of the page
+- Reasonable use of CSS for layout
+- Obvious to the user how to interact with the quiz
+
+Polish and Extra Features
+-------------------------
+: 3 / 3
+
+- Evidence of some creative work. 
+
+TA Feedback:
+It's really nice. Wow.
+
+
+TOTAL
+
+: 19 / 20
